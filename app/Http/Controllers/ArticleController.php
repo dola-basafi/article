@@ -144,7 +144,7 @@ class ArticleController extends Controller
             $path = str_replace($request->getSchemeAndHttpHost() . "/storage/", "public/",  $data->media);
             
             // dd($path);
-            dd(Storage::disk('public')->delete($path));
+            Storage::delete($path);
             $path = Storage::putFile('public/files', $request->file('media'));
 
             $path = str_replace("public/", $request->getSchemeAndHttpHost() . "/storage/",  $path);
@@ -174,7 +174,7 @@ class ArticleController extends Controller
         // $banner = str_replace($request->getSchemeAndHttpHost() . "/storage/", "", $dataDelete->media);
         $path = str_replace($request->getSchemeAndHttpHost() . "/storage/", "public/",  $dataDelete->media);
         
-        Storage::disk('public')->delete($path);
+        Storage::delete($path);
         //delete article
         $dataDelete->delete();
         return response()->json([
