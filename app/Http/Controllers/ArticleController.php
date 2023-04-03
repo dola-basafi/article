@@ -45,9 +45,9 @@ class ArticleController extends Controller
             ]);
         }
         //save file to files folder
-        $path = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('media')->store('files', 'public');
-        // $path = Storage::putFile('public/files', $request->file('media'));
-        // $path = str_replace("public/", $request->getSchemeAndHttpHost() . "/storage/", $path);
+        // $path = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('media')->store('files', 'public');
+        $path = Storage::putFile('public/files', $request->file('media'));
+        $path = str_replace("public/", $request->getSchemeAndHttpHost() . "/storage/", $path);
         Article::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
@@ -141,10 +141,11 @@ class ArticleController extends Controller
             //replace url with local directory
             // $banner = str_replace($request->getSchemeAndHttpHost() . "/storage/", "", $data->media);
             //delete old files
-            $path = str_replace($request->getSchemeAndHttpHost() . "/storage/", "public/",  $data->media);
+            $path = str_replace($request->getSchemeAndHttpHost() . "/storage/", "",  $data->media);
             
             // dd($path);
-            Storage::delete($path);
+            Storage::disk('public')->delete($path);
+
             $path = Storage::putFile('public/files', $request->file('media'));
 
             $path = str_replace("public/", $request->getSchemeAndHttpHost() . "/storage/",  $path);
@@ -172,8 +173,8 @@ class ArticleController extends Controller
         }
         //replace url with local directory
         // $banner = str_replace($request->getSchemeAndHttpHost() . "/storage/", "", $dataDelete->media);
-        $path = str_replace($request->getSchemeAndHttpHost() . "/storage/", "public/",  $dataDelete->media);
-        
+        $path = str_replace($request->getSchemeAndHttpHost() . "/storage/", "",  $dataDelete->media);
+        Storage::disk('public')->delete($path);
         Storage::delete($path);
         //delete article
         $dataDelete->delete();
