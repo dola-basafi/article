@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-use function GuzzleHttp\Promise\all;
 
 class ArticleController extends Controller
 {
@@ -46,7 +45,9 @@ class ArticleController extends Controller
             ]);
         }
         //save file to files folder
-        $path = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('media')->store('files', 'public');
+        // $path = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('media')->store('files', 'public');
+        $path = Storage::putFile('public/files', $request->file('media'));
+        $path = str_replace("public/", $request->getSchemeAndHttpHost() . "/storage/", $path);
         Article::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
@@ -138,11 +139,17 @@ class ArticleController extends Controller
         //check request have file ?
         if ($request->hasFile('media')) {
             //replace url with local directory
-            $banner = str_replace($request->getSchemeAndHttpHost() . "/storage/", "", $data->media);
+            // $banner = str_replace($request->getSchemeAndHttpHost() . "/storage/", "", $data->media);
             //delete old files
-            Storage::disk('public')->delete($banner);
+            $path = str_replace($request->getSchemeAndHttpHost() . "/storage/", "public/",  $data->media);
+            
+            // dd($path);
+            dd(Storage::disk('public')->delete($path));
+            $path = Storage::putFile('public/files', $request->file('media'));
+
+            $path = str_replace("public/", $request->getSchemeAndHttpHost() . "/storage/",  $path);
             //save new file to files folder 
-            $path = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('media')->store('files', 'public');
+            // $path = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('media')->store('files', 'public');
             $data->media = $path;
         }
         //update article
@@ -164,8 +171,10 @@ class ArticleController extends Controller
             ]);
         }
         //replace url with local directory
-        $banner = str_replace($request->getSchemeAndHttpHost() . "/storage/", "", $dataDelete->media);
-        Storage::disk('public')->delete($banner);
+        // $banner = str_replace($request->getSchemeAndHttpHost() . "/storage/", "", $dataDelete->media);
+        $path = str_replace($request->getSchemeAndHttpHost() . "/storage/", "public/",  $dataDelete->media);
+        
+        Storage::disk('public')->delete($path);
         //delete article
         $dataDelete->delete();
         return response()->json([
