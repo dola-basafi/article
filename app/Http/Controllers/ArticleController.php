@@ -45,9 +45,9 @@ class ArticleController extends Controller
             ]);
         }
         //save file to files folder
-        // $path = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('media')->store('files', 'public');
-        $path = Storage::putFile('public/files', $request->file('media'));
-        $path = str_replace("public/", $request->getSchemeAndHttpHost() . "/storage/", $path);
+        $path = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('media')->store('files', 'public');
+        // $path = Storage::putFile('public/files', $request->file('media'));
+        // $path = str_replace("public/", $request->getSchemeAndHttpHost() . "/storage/", $path);
         Article::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
