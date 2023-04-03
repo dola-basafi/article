@@ -56,7 +56,7 @@ class UserController extends Controller
             ], 401);
         }
         $token = $user->createToken('auth_token')->plainTextToken;
-            // response success
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Login success',
