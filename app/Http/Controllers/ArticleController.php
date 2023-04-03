@@ -76,7 +76,7 @@ class ArticleController extends Controller
         //response json with all data
         return response()->json([
             'status' => true,
-            'message' => $data
+            'messages' => $data
         ]);
     }
 
@@ -98,7 +98,7 @@ class ArticleController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => $data
+            'messages' => $data
         ]);
     }
 

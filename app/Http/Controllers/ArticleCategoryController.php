@@ -21,7 +21,7 @@ class ArticleCategoryController extends Controller
         $data = DB::table('articlecategories')->offset($start)->limit(5)->get();
         return response()->json([
             'status' => true,
-            'message' => $data
+            'messages' => $data
         ]);
     }
     function update(Request $request, $id)
@@ -35,7 +35,7 @@ class ArticleCategoryController extends Controller
         }
         return response()->json([
             'status' => true,
-            'message' => "success update data"
+            'messages' => "success update data"
         ]);
     }
     function store(Request $request)
@@ -55,7 +55,7 @@ class ArticleCategoryController extends Controller
             //if fail
             return response()->json([
                 'status' => false,
-                'message' => $validator->errors()
+                'messages' => $validator->errors()
             ], 400);
         }
         //if not fail create data
@@ -64,7 +64,7 @@ class ArticleCategoryController extends Controller
         ]);
         return response()->json([
             'status' => true,
-            'message' => "success create data"
+            'messages' => "success create data"
         ]);
     }
     function show($id)
@@ -74,12 +74,12 @@ class ArticleCategoryController extends Controller
         if ($data) {
             return response()->json([
                 'status' => true,
-                'message' => $data
+                'messages' => $data
             ]);
         }
         return response()->json([
             'status' => false,
-            'message' => 'data with this id is not found'
+            'messages' => 'data with this id is not found'
         ]);
     }
     function destroy($id)
@@ -91,13 +91,13 @@ class ArticleCategoryController extends Controller
             $delete->delete();
             return response()->json([
                 'status' => true,
-                'message' => 'success delete data'
+                'messages' => 'success delete data'
             ]);
         }
         //if category  not exist
         return response()->json([
             'status' => false,
-            'message' => 'data with this id is not found'
+            'messages' => 'data with this id is not found'
         ]);
     }
 }

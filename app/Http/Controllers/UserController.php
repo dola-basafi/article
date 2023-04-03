@@ -52,14 +52,14 @@ class UserController extends Controller
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'success' => false,
-                'message' => 'Login Failed, The data you entered is incorrect!!'
+                'messages' => 'Login Failed, The data you entered is incorrect!!'
             ], 401);
         }
         $token = $user->createToken('auth_token')->plainTextToken;
             
             return response()->json([
                 'success' => true,
-                'message' => 'Login success',
+                'messages' => 'Login success',
                 'access_token' => $token,
                 'token_type' => 'Bearer'
             ], 200);
